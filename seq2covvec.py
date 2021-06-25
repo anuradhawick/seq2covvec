@@ -40,7 +40,7 @@ def main():
                         default=8,
                         required=False)
     parser.add_argument('--output', '-o',
-                        help="Output directory", type=str, required=True)
+                        help="Output file name", type=str, required=True)
 
     # command line args
     args = parser.parse_args()
