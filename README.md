@@ -8,14 +8,19 @@ Supports k-mer sizes from 11 to 31. Higher k values demands larger memory. For P
 ### Future improvements to follow include; 
 * faster buffered hashing of k-mers, k-mer count thresholds to avoid too abundant, or too scarce k-mers. 
 * Memory maps for faster IO.
-* Support for different files for indexing k-mers and computing vectors, e.g: potential use for Illumina assemblies or contigs in general
+* Support for different files for indexing k-mers and computing vectors, e.g: potential use for Illumina assemblies or contigs in general.
+* Code is not clean, so needs `-std=c++17` to compile some `inline` functions. Have to work on this too! Will be fixed with above improvements though.
 
 
 
 ### Build
 
 ```
-sh build.sh
+sh build.sh (Linux)
+```
+Or
+```
+sh build.sh osx (MacOS)
 ```
 
 ### Check help
