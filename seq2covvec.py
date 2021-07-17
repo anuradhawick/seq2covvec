@@ -1,4 +1,4 @@
-#!/home/anuvini/anaconda3/envs/py37/bin/python
+#!/usr/bin/python
 
 import os
 import sys
