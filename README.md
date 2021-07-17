@@ -1,13 +1,16 @@
-# seq2covvec: Coverage vector generation for binning long reads datasets
+# seq2covvec: Coverage vector generation for binning long reads metagenomic datasets
 
 Coverage vector computation algorithm presented in [MetaBCC-LR](https://doi.org/10.1093/bioinformatics/btaa441).
 Computations are much faster now due to several improvements we have done. More flexibility for vectors are also included.
 
-Supports k-mer sizes from 11 to 31. Higher k values demands larger memory. 
+Supports k-mer sizes from 11 to 31. Higher k values demands larger memory. For PacBio HiFi and Oxford Nanopore Q20+ reads, try k values above 19 else use 15 or lower.
 
-> Future improvements to follow include; faster buffered hashing of k-mers, k-mer count thresholds to avoid too abundant, or too scarce k-mers.
+### Future improvements to follow include; 
+* faster buffered hashing of k-mers, k-mer count thresholds to avoid too abundant, or too scarce k-mers. 
+* Memory maps for faster IO.
+* Support for different files for indexing k-mers and computing vectors, e.g: potential use for Illumina assemblies or contigs in general
 
-For PacBio HiFi and Oxford Nanopore Q20+ reads, try k values above 19 else use 15 or lower.
+
 
 ### Build
 
