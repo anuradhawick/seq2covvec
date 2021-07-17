@@ -4,10 +4,12 @@
 #include <atomic>
 #include <fstream>
 #include <string>
+#include <mutex>
+#include <cmath>
 
 using namespace std;
 
-inline u_int64_t revComp(u_int64_t x, size_t sizeKmer = 15)
+inline u_int64_t revComp(u_int64_t x, u_int64_t k_size)
 {
     u_int64_t res = x;
 
@@ -18,14 +20,16 @@ inline u_int64_t revComp(u_int64_t x, size_t sizeKmer = 15)
     res = ((res >> 32 & 0x00000000FFFFFFFF) | (res & 0x00000000FFFFFFFF) << 32);
     res = res ^ 0xAAAAAAAAAAAAAAAA;
 
-    return (res >> (2 * (32 - sizeKmer)));
+    return (res >> (2ULL * (32ULL - k_size)));
 }
 
-inline double *line_to_vec(string &line, vector<atomic<u_int32_t>> &allKmers, long bin_size, int bins)
+inline double *line_to_vec(string &line, unordered_map<u_int64_t, atomic<u_int32_t>> &allKmers, u_int64_t k_size, long bin_size, int bins)
 {
     double *counts = new double[bins];
-    long sum = 0, count, pos, len = 0;
-    u_int64_t val = 0;
+    long sum = 0, count, pos;
+    u_int64_t len = 0;
+    u_int64_t val = 0, rev = 0,min_compl = 0;
+    u_int64_t mask = (1ULL<<(2ULL * k_size)) - 1;
 
     // to avoid garbage memory
     for (int i = 0; i < bins; i++)
@@ -43,15 +47,27 @@ inline double *line_to_vec(string &line, vector<atomic<u_int32_t>> &allKmers, lo
         }
 
         val = (val << 2);
-        val = val & 1073741823;
-        val += (line[i] >> 1 & 3);
+        val = val & mask;
+        val += (line[i] >> 1 & 3ULL);
         len++;
 
-        if (len == 15)
+        if (len == k_size)
         {
             // use val as the kmer for counting
             len--;
-            count = allKmers[(long)val];
+            // get min complement
+            rev = revComp(val, k_size);
+            min_compl = min(val, rev);
+
+            if (allKmers.find(min_compl) == allKmers.end())
+            {
+                count = 0;
+            }
+            else
+            {
+                count = allKmers[min_compl];
+            }
+
             count = count < 2 ? 0: count;
             pos = (count / bin_size) - 1;
 
@@ -111,10 +127,12 @@ inline vector<atomic<u_int32_t>> readKmerFile(string filename)
     return kmers;
 }
 
-inline void line_to_kmer_counts(string &line, vector<atomic<u_int32_t>> &all_kmers)
+inline mutex hash_mux;
+inline void line_to_kmer_counts(string &line, unordered_map<u_int64_t, atomic<u_int32_t>> &all_kmers, u_int64_t k_size)
 {
-    long len = 0;
-    u_int64_t val = 0, rev = 0;
+    u_int64_t len = 0;
+    u_int64_t val = 0, rev = 0, min_compl;
+    u_int64_t mask = (1ULL<<(2ULL * k_size)) - 1;
     u_int32_t oval;
 
     for (size_t i = 0; i < line.length(); i++)
@@ -127,28 +145,35 @@ inline void line_to_kmer_counts(string &line, vector<atomic<u_int32_t>> &all_kme
         }
 
         val = (val << 2);
-        val = val & 1073741823;
-        val += (line[i] >> 1 & 3);
+        val = val & mask;
+        val += (line[i] >> 1 & 3ULL);
         len++;
 
-        if (len == 15)
+        if (len == k_size)
         {
+            // pick the smallest of both
+            rev = revComp(val, k_size);
+            min_compl = min(rev, val);
+            
+            // add val to hash if not there (singleton pattern)
+            if (all_kmers.find(min_compl) == all_kmers.end())
+            {
+                {
+                    unique_lock<mutex> lock(hash_mux);
+                    if (all_kmers.find(min_compl) == all_kmers.end())
+                    {
+                        all_kmers.emplace(min_compl, 0);
+                    }
+                }
+            }
+            
             // use val as the kmer for counting
             len--;
             // record original value from index
-            oval = all_kmers[val];
+            oval = all_kmers[min_compl];
             
             // CAS
-            while (!all_kmers[val].compare_exchange_weak(oval, oval + 1))
-            {
-            };
-
-            // reverse complement recording
-            rev = revComp(val);
-            oval = all_kmers[rev];
-            
-            // CAS
-            while (!all_kmers[rev].compare_exchange_weak(oval, oval + 1))
+            while (!all_kmers[min_compl].compare_exchange_weak(oval, oval + 1))
             {
             };
         }

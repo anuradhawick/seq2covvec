@@ -1,0 +1,11 @@
+Loaded Reads 1       Loaded Reads 2       Loaded Reads 3       Loaded Reads 4       Loaded Reads 5       
+INPUT FILE /home/anuvini/seq2covvec/temp.fasta
+OUTPUT FILE temp.out
+K SIZE 15
+BIN WIDTH 1
+BINS IN HIST 5
+THREADS 1
+Loaded Reads 1       Loaded Reads 2       Loaded Reads 3       Loaded Reads 4       Loaded Reads 5       
+COMPLETED : Output at - temp.out
+CMD::"./bin/search-15mers" "/home/anuvini/seq2covvec/temp.fasta" "temp.out" 15 1 5 1
+Seq2CovVec Complete!
