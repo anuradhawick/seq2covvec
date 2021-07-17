@@ -204,7 +204,7 @@ int main(int argc, char **argv)
     int bins = stoi(argv[5]);
     int threads = stoi(argv[6]);
 
-    if (k_size > 32 || k_size < 15)
+    if (k_size > 31 || k_size < 11)
     {
         return -1;
     }
