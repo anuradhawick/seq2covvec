@@ -190,7 +190,10 @@ void io_thread(string &file_path)
             reads_queue.push(seq.data);
         }
         count++;
-        cout << "Loaded Reads " << count << "       \r" << flush;
+        if (count % 10000 == 0)
+        {
+            cout << "Loaded Reads " << count << "       \r" << flush;
+        }
     }
 
     cout << endl;
