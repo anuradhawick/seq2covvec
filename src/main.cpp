@@ -195,7 +195,7 @@ void io_thread(string &file_path)
             cout << "Loaded Reads " << count << "       \r" << flush;
         }
     }
-
+    cout << "Loaded Reads " << count << "       \r" << flush;
     cout << endl;
 
     terminate_threads = true;
