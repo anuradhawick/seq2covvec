@@ -87,9 +87,12 @@ void io_thread_counter(string &file_path)
             reads_queue.push(seq.data);
         }
         count++;
-        cout << "Loaded Reads " << count << "       \r" << flush;
+        if (count % 10000 == 0)
+        {
+            cout << "Loaded Reads " << count << "       \r" << flush;
+        }
     }
-
+    cout << "Loaded Reads " << count << "       \r" << flush;
     cout << endl;
 
     terminate_threads = true;
@@ -204,7 +207,7 @@ int main(int argc, char **argv)
     int bins = stoi(argv[5]);
     int threads = stoi(argv[6]);
 
-    if (k_size > 31 || k_size < 11)
+    if (k_size > 31 || k_size < 7)
     {
         return -1;
     }

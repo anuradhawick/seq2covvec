@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/home/anuvini/anaconda3/envs/py37/bin/python
 
 import os
 import sys
@@ -12,11 +12,11 @@ def check_proc(ret, name=""):
         print("Failed due to an error. Please check the log. Good Bye!")
         sys.exit(ret)
 
-def run_15mer_vecs(reads_path, output, k_size, bin_size, bin_count, threads):
+def run_kmer_vecs(reads_path, output, k_size, bin_size, bin_count, threads):
     cmd = f""""{os.path.dirname(__file__)}/bin/seq2covvec" "{reads_path}" "{output}" {k_size} {bin_size} {bin_count} {threads}"""
     print("CMD::" + cmd)
     o = os.system(cmd)
-    check_proc(o, "Counting 15-mer profiles")
+    check_proc(o, f"Counting {k_size} profiles")
 
 def main():
     parser = argparse.ArgumentParser(description="""Convert sequences into coverage vectors. Supports k-mer sizes from 11-31.""")
@@ -29,8 +29,8 @@ def main():
                         help="K size for the coverage histogram.",
                         type=int,
                         required=False,
-                        choices=range(11, 32),
-                        metavar="[11-31]", 
+                        choices=range(7, 32),
+                        metavar="[7-31]", 
                         default=15)
     parser.add_argument('--bin-size', '-bs',
                         help="Bin size for the coverage histogram.",
@@ -60,7 +60,7 @@ def main():
     bin_count = args.bin_count
     output = args.output
 
-    run_15mer_vecs(reads_path, output, k_size, bin_size, bin_count, threads)
+    run_kmer_vecs(reads_path, output, k_size, bin_size, bin_count, threads)
 
     print("Seq2CovVec Complete!")
 
