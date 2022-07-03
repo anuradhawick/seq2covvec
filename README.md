@@ -38,7 +38,7 @@ optional arguments:
   -h, --help            show this help message and exit
   --reads-path READS_PATH, -r READS_PATH
                         Reads path for binning
-  --k-size [11-31], -k [11-31]
+  --k-size [7-31], -k [7-31]
                         K size for the coverage histogram.
   --bin-size BIN_SIZE, -bs BIN_SIZE
                         Bin size for the coverage histogram.
