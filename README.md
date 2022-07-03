@@ -50,7 +50,7 @@ optional arguments:
                         Output file name
 ```
 
-### Citation
+### Citation for algorithms
 
 ```bibtex
 @article{10.1093/bioinformatics/btaa441,
@@ -67,5 +67,23 @@ optional arguments:
     doi = {10.1093/bioinformatics/btaa441},
     url = {https://doi.org/10.1093/bioinformatics/btaa441},
     eprint = {https://academic.oup.com/bioinformatics/article-pdf/36/Supplement\_1/i3/33488763/btaa441.pdf},
+}
+```
+
+### Citation for this software
+
+[![DOI](https://zenodo.org/badge/380135386.svg)](https://zenodo.org/badge/latestdoi/380135386)
+
+
+```bibtex
+@software{anuradha_wickramarachchi_2021_5515745,
+  author       = {Anuradha Wickramarachchi},
+  title        = {anuradhawick/seq2covvec: Release v1.0},
+  month        = sep,
+  year         = 2021,
+  publisher    = {Zenodo},
+  version      = {v1.0},
+  doi          = {10.5281/zenodo.5515745},
+  url          = {https://doi.org/10.5281/zenodo.5515745}
 }
 ```
