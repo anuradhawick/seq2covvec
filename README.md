@@ -1,5 +1,7 @@
 # seq2covvec: Coverage vector generation for binning long reads metagenomic datasets
 
+## 🛑 a newer, faster and a complete tool is on the way - [https://github.com/anuradhawick/kmertools](https://github.com/anuradhawick/kmertools)
+
 Coverage vector computation algorithm presented in [MetaBCC-LR](https://doi.org/10.1093/bioinformatics/btaa441).
 Computations are much faster now due to several improvements we have done. More flexibility for vectors are also included.
 
