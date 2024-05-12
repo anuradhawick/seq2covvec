@@ -1,8 +1,8 @@
-#!/home/anuvini/anaconda3/envs/py37/bin/python
+#!/usr/bin/env python3
 
+import argparse
 import os
 import sys
-import argparse
 
 
 def check_proc(ret, name=""):
